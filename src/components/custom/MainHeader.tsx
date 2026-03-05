@@ -80,10 +80,10 @@ export function MainHeader() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 flex w-full items-center justify-between py-2 transition-all duration-300 ",
+        "sticky top-0 z-50 flex w-full items-center justify-between py-2 transition-all duration-500",
         isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border shadow-sm"
-          : "bg-transparent border-b border-transparent text-foreground"
+          ? "bg-background/95 backdrop-blur-md border-b border-border shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)]"
+          : "bg-linear-to-b from-black/50 to-transparent border-transparent text-white"
       )}
     >
       <div className="flex items-center gap-4 md:gap-8 px-4 h-10 w-48 relative">
@@ -92,7 +92,10 @@ export function MainHeader() {
           onMouseEnter={() => setIsSidebarHovered(true)} 
           onMouseLeave={() => setIsSidebarHovered(false)}
         >
-          <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
+          <SidebarTrigger className={cn(
+            "h-9 w-9 transition-colors",
+            isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white"
+          )} />
         </div>
         
         <Link href="/" className="ml-2 md:ml-0 flex items-center absolute left-14 transition-all duration-300">
@@ -107,7 +110,15 @@ export function MainHeader() {
       <div className="flex items-center gap-1 md:gap-4 ">
         <div className="relative flex items-center justify-center h-10 w-9">
           {!searchOpen ? (
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground absolute z-10" onClick={() => setSearchOpen(true)}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn(
+                "absolute z-10 transition-colors",
+                isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white"
+              )} 
+              onClick={() => setSearchOpen(true)}
+            >
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
             </Button>
@@ -144,7 +155,14 @@ export function MainHeader() {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground md:flex relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn(
+                "md:flex relative transition-colors",
+                isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white"
+              )}
+            >
               <Bell className="h-5 w-5" />
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-600 border border-background"></span>
               <span className="sr-only">Notifications</span>
@@ -188,12 +206,15 @@ export function MainHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer outline-none">
-            <Button variant="ghost" className="flex group items-center  hover:bg-accent/50 rounded-full h-10">
+            <Button variant="ghost" className="flex group items-center hover:bg-accent/50 rounded-full h-10 transition-colors">
               <Avatar className="h-8 w-8 ring-2 ring-transparent transition-all group-hover:ring-border">
                 <AvatarImage src="" alt="@avatar" />
-                <AvatarFallback className="bg-primary/10 text-primary">N</AvatarFallback>
+                <AvatarFallback className="bg-primary/20 text-primary">N</AvatarFallback>
               </Avatar>
-              <ChevronDown className="h-2 w-2 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              <ChevronDown className={cn(
+                "h-2 w-2 transition-all duration-200 group-data-[state=open]:rotate-180",
+                isScrolled ? "text-muted-foreground" : "text-white/80"
+              )} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-35 mt-1 mr-1  rounded-xl border border-border bg-popover/95 backdrop-blur-md p-2 text-popover-foreground shadow-xl">
@@ -205,9 +226,7 @@ export function MainHeader() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-border/50" />
             
-            <DropdownMenuItem onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="cursor-pointer rounded-lg focus:bg-accent focus:text-accent-foreground">
-              {theme === 'dark' ? 'Light mode' : 'Dark mode'}
-            </DropdownMenuItem>
+            
             
             <DropdownMenuItem className="cursor-pointer rounded-lg focus:bg-accent focus:text-accent-foreground">
               Profile settings
