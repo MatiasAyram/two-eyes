@@ -1,12 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Montserrat } from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["900"],
-});
 import Link from "next/link";
 import { Search, Bell, ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -106,11 +100,6 @@ export function MainHeader() {
             <span className="text-sm md:text-base font-semibold text-muted-foreground animate-in fade-in slide-in-from-left-2 duration-200 whitespace-nowrap">
               {state === "expanded" ? "Close Sidebar" : "Open Sidebar"}
             </span>
-          ) : state === "collapsed" ? (
-            <div className={cn("flex font-black text-2xl md:text-3xl tracking-tight drop-shadow-sm animate-in fade-in fade-out", montserrat.className)}>
-              <span className="text-red-600">TWO</span>
-              <span className="text-white ml-1.5">EYES</span>
-            </div>
           ) : null}
         </Link>
       </div>

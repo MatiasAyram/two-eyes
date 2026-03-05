@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MainHeader } from "@/components/custom/MainHeader";
 import { AppSidebar } from "@/components/custom/AppSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 
@@ -20,12 +20,10 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SidebarProvider>
             <AppSidebar />
-            <div className="flex flex-col w-full relative">
+            <SidebarInset className="relative flex flex-col overflow-x-hidden">
               <MainHeader />
-              <main className="flex-1 w-full">
-                {children}
-              </main>
-            </div>
+              {children}
+            </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>
       </body>
