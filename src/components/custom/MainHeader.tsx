@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 export const headerRoutes = [
   {
@@ -39,8 +40,9 @@ export const headerRoutes = [
   },
 ];
 
-export function NetflixHeader() {
+export function MainHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,16 +51,17 @@ export function NetflixHeader() {
       } else {
         setIsScrolled(false);
       }
-    };
+    }
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
       className={cn(
-        "fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-colors duration-300 md:px-12",
+        "fixed top-0 z-50 flex w-full items-center justify-between px-3 py-1 transition-colors duration-300 ",
         isScrolled ? "bg-black" : "bg-linear-to-b from-black/80 to-transparent"
       )}
     >
@@ -66,7 +69,7 @@ export function NetflixHeader() {
         <Link href="/" className="text-2xl font-black md:text-3xl tracking-wide">
           <Image  src="/two-eyes-logo.png" alt="Logo" width={50} height={50} />
         </Link>
-        <nav className="hidden items-center gap-5 text-sm font-medium text-white/90 md:flex">
+        <nav className="hidden items-center gap-5 text-sm font-medium text-foreground md:flex">
         {headerRoutes.map((route) => (
           <Link key={route.href} href={route.href} className="transition-colors hover:text-white">
             {route.label}
@@ -110,7 +113,7 @@ export function NetflixHeader() {
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-zinc-800" />
             <DropdownMenuItem className="focus:bg-zinc-800 cursor-pointer text-white hover:text-[#E50914] focus:text-[#E50914]">
-              Sign out of Netflix
+              Sign out of Two Eyes
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
