@@ -22,7 +22,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 
 export const headerRoutes = [
   {
@@ -55,8 +55,10 @@ export function MainHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
+  const { state } = useSidebar();
 
   useEffect(() => {
     if (searchOpen) {
@@ -90,13 +92,26 @@ export function MainHeader() {
           : "bg-transparent border-b border-transparent text-foreground"
       )}
     >
-      <div className="flex items-center gap-4 md:gap-8 px-4">
-        <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
-        <Link href="/" className="ml-2 md:ml-0 flex items-center">
-          <div className={cn("flex font-black text-2xl md:text-3xl tracking-tight drop-shadow-sm", montserrat.className)}>
-            <span className="text-red-600">TWO</span>
-            <span className="text-white ml-1.5">EYES</span>
-          </div>
+      <div className="flex items-center gap-4 md:gap-8 px-4 h-10 w-48 relative">
+        <div 
+          className="flex items-center h-full"
+          onMouseEnter={() => setIsSidebarHovered(true)} 
+          onMouseLeave={() => setIsSidebarHovered(false)}
+        >
+          <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
+        </div>
+        
+        <Link href="/" className="ml-2 md:ml-0 flex items-center absolute left-14 transition-all duration-300">
+          {!isSidebarHovered ? (
+            <div className={cn("flex font-black text-2xl md:text-3xl tracking-tight drop-shadow-sm animate-in fade-in fade-out", montserrat.className)}>
+              <span className="text-red-600">TWO</span>
+              <span className="text-white ml-1.5">EYES</span>
+            </div>
+          ) : (
+            <span className="text-sm md:text-base font-semibold text-muted-foreground animate-in fade-in slide-in-from-left-2 duration-200 whitespace-nowrap">
+              {state === "expanded" ? "Close Sidebar" : "Open Sidebar"}
+            </span>
+          )}
         </Link>
       </div>
 
