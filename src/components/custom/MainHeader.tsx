@@ -102,16 +102,16 @@ export function MainHeader() {
         </div>
         
         <Link href="/" className="ml-2 md:ml-0 flex items-center absolute left-14 transition-all duration-300">
-          {!isSidebarHovered ? (
+          {isSidebarHovered ? (
+            <span className="text-sm md:text-base font-semibold text-muted-foreground animate-in fade-in slide-in-from-left-2 duration-200 whitespace-nowrap">
+              {state === "expanded" ? "Close Sidebar" : "Open Sidebar"}
+            </span>
+          ) : state === "collapsed" ? (
             <div className={cn("flex font-black text-2xl md:text-3xl tracking-tight drop-shadow-sm animate-in fade-in fade-out", montserrat.className)}>
               <span className="text-red-600">TWO</span>
               <span className="text-white ml-1.5">EYES</span>
             </div>
-          ) : (
-            <span className="text-sm md:text-base font-semibold text-muted-foreground animate-in fade-in slide-in-from-left-2 duration-200 whitespace-nowrap">
-              {state === "expanded" ? "Close Sidebar" : "Open Sidebar"}
-            </span>
-          )}
+          ) : null}
         </Link>
       </div>
 
