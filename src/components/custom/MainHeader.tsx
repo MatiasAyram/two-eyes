@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Search, Bell, ChevronDown } from "lucide-react";
+import { Search, Bell, ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,7 +46,18 @@ const notifications = [
 
 export function MainHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    if (searchOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [searchOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,10 +98,43 @@ export function MainHeader() {
       </div>
 
       <div className="flex items-center gap-1 md:gap-4 ">
-        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-          <Search className="h-5 w-5" />
-          <span className="sr-only">Search</span>
-        </Button>
+        <div className="relative flex items-center justify-center h-10 w-9">
+          {!searchOpen ? (
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground absolute z-10" onClick={() => setSearchOpen(true)}>
+              <Search className="h-5 w-5" />
+              <span className="sr-only">Search</span>
+            </Button>
+          ) : (
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-background border border-border/50 rounded-full shadow-lg z-50 h-10 w-60 md:w-80 transition-all duration-300">
+              <Search className="h-5 w-5 ml-3 text-muted-foreground shrink-0" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Títulos, personas, géneros..."
+                className="flex-1 bg-transparent px-3 text-sm text-foreground placeholder:text-muted-foreground outline-none min-w-0"
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    setSearchOpen(false);
+                    setSearchQuery("");
+                  }
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 mr-1 text-muted-foreground hover:text-foreground shrink-0 rounded-full"
+                onClick={() => {
+                  setSearchOpen(false);
+                  setSearchQuery("");
+                }}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
         <Link href="/kids" className="hidden text-sm font-medium text-muted-foreground hover:text-foreground md:block">
           Kids
         </Link>
