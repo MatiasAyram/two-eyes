@@ -1,6 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["900"],
+});
 import Link from "next/link";
 import { Search, Bell, ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,6 +22,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export const headerRoutes = [
   {
@@ -77,24 +84,20 @@ export function MainHeader() {
   return (
     <header
       className={cn(
-        "fixed top-0 z-50 flex w-full items-center justify-between  transition-all duration-300 ",
+        "sticky top-0 z-50 flex w-full items-center justify-between py-2 transition-all duration-300 ",
         isScrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border shadow-sm"
           : "bg-transparent border-b border-transparent text-foreground"
       )}
     >
-      <div className="flex items-center gap-8">
-        <Link href="/" className="translate-y-0.5">
-          <Image  src="/two-eyes-logo.png" alt="Logo" width={50} height={50} />
+      <div className="flex items-center gap-4 md:gap-8 px-4">
+        <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
+        <Link href="/" className="ml-2 md:ml-0 flex items-center">
+          <div className={cn("flex font-black text-2xl md:text-3xl tracking-tight drop-shadow-sm", montserrat.className)}>
+            <span className="text-red-600">TWO</span>
+            <span className="text-white ml-1.5">EYES</span>
+          </div>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-        {headerRoutes.map((route) => (
-          <Link key={route.href} href={route.href} className="text-muted-foreground transition-colors hover:text-foreground">
-            {route.label}
-          </Link>
-        ))}
-          
-        </nav>
       </div>
 
       <div className="flex items-center gap-1 md:gap-4 ">
@@ -135,9 +138,6 @@ export function MainHeader() {
             </div>
           )}
         </div>
-        <Link href="/kids" className="hidden text-sm font-medium text-muted-foreground hover:text-foreground md:block">
-          Kids
-        </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground md:flex relative">
